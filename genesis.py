@@ -116,7 +116,7 @@ def create_block_header(hash_merkle_root, time, bits, nonce):
 def generate_hash(data_block, algorithm, start_nonce, bits):
     print('Searching for genesis hash..')
     nonce = start_nonce
-    last_updated = time.time()
+    last_updated = time.time()  # Инициализируем с правильным значением времени
     target = (bits & 0xffffff) * 2 ** (8 * ((bits >> 24) - 3))
 
     while True:
@@ -166,6 +166,8 @@ def calculate_hashrate(nonce, last_updated):
         hashrate = round(1000000 / (now - last_updated))
         generation_time = round(pow(2, 32) / hashrate / 3600, 1)
         sys.stdout.write("\r%s hash/s, estimate: %sh" % (hashrate, generation_time))
+        last_updated = now  # обновляем время после расчета хешрейта
+    return last_updated
 
 def print_block_info(options, hash_merkle_root):
     print("block header: ")
